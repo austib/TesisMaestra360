@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TesisMaestra360 - Soluciones Académicas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F0F4F8; 
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 350px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+                max-height: 400px;
+            }
+        }
+        .flowchart-step {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            min-height: 120px;
+            transition: all 0.3s ease;
+        }
+        .flowchart-arrow {
+            font-size: 2.5rem;
+            color: #FFA600;
+            margin: 0 1rem;
+            transform: rotate(90deg);
+        }
+        @media (min-width: 768px) {
+            .flowchart-arrow {
+                transform: rotate(0deg);
+            }
+        }
+        .stat-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .llm-card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        #messageModal {
+            display: none;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <nav class="sticky top-0 z-50 bg-[#003F5C] bg-opacity-90 backdrop-blur-sm shadow-md py-4 px-6">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#home" class="text-white text-2xl font-bold">TesisMaestra360</a>
+            <div class="hidden md:flex space-x-6 text-white font-semibold">
+                <a href="#quienes-somos" class="hover:text-[#FFA600] transition-colors">Quiénes Somos</a>
+                <a href="#servicios" class="hover:text-[#FFA600] transition-colors">Servicios</a>
+                <a href="#impacto" class="hover:text-[#FFA600] transition-colors">Nuestro Impacto</a>
+                <a href="#herramientas" class="hover:text-[#FFA600] transition-colors">Herramientas con IA</a>
+                <a href="#contacto" class="hover:text-[#FFA600] transition-colors">Contacto</a>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="bg-[#003F5C] text-white text-center py-20 md:py-32 px-6">
+        <h1 class="text-4xl md:text-6xl font-bold mb-4">Transforma tu Tesis en una Realidad</h1>
+        <p class="text-lg md:text-2xl max-w-3xl mx-auto mb-8">Ofrecemos soluciones académicas profesionales para que culmines tu licenciatura o maestría con éxito y sin estrés.</p>
+        <a href="#contacto" class="bg-[#F95D6A] hover:bg-[#D45087] text-white font-bold py-3 px-8 rounded-full transition-colors text-lg">Empieza Hoy Mismo</a>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-12">
+
+        <section id="quienes-somos" class="mb-16 pt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] text-center mb-4">Quiénes Somos</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-4xl mx-auto">
+                <p class="text-lg text-center leading-relaxed">En TesisMaestra360, somos un equipo de expertos académicos dedicados a acompañarte en cada etapa del proceso de elaboración de tu tesis o monografía. Entendemos los desafíos y la presión, y por eso ofrecemos una asesoría personalizada y un apoyo integral para que tu proyecto sea de la más alta calidad y cumpla con todas las exigencias de tu institución. Nuestra misión es simple: convertir tu esfuerzo en un logro tangible y profesional.</p>
+            </div>
+        </section>
+
+        <section id="servicios" class="mb-16 pt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] text-center mb-12">Nuestros Servicios</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card">
+                    <div class="text-5xl mb-4 text-[#665191]">💡</div>
+                    <h3 class="text-2xl font-bold text-[#2F4B7C] mb-2">Asesoría y Orientación</h3>
+                    <p class="text-gray-600">Te guiamos desde la elección de un tema viable, la formulación de tu pregunta de investigación, hasta la creación de un cronograma de trabajo detallado para que tu proyecto tenga una base sólida.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 text-[#D45087]">✍️</div>
+                    <h3 class="text-2xl font-bold text-[#665191] mb-2">Redacción y Contenido</h3>
+                    <p class="text-gray-600">Apoyamos en la búsqueda bibliográfica, el desarrollo de la investigación y la redacción de cada capítulo, garantizando que el contenido sea original, coherente y bien fundamentado.</p>
+                </div>
+                <div class="card">
+                    <div class="text-5xl mb-4 text-[#FFA600]">✔️</div>
+                    <h3 class="text-2xl font-bold text-[#A05195] mb-2">Edición y Formato</h3>
+                    <p class="text-gray-600">Revisamos y corregimos tu trabajo para eliminar errores gramaticales y de estilo. Nos aseguramos de que el formato (APA, MLA, etc.) cumpla con los estándares académicos más rigurosos.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="proceso" class="mb-16 pt-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] mb-4">Nuestro Proceso Simplificado</h2>
+                <p class="text-lg max-w-3xl mx-auto">Te ofrecemos un apoyo integral y personalizado. Este es nuestro método probado para garantizar que tu proyecto sea un éxito rotundo, paso a paso.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center">
+                <div class="flowchart-step bg-white shadow-lg w-full md:w-1/4 mb-4 md:mb-0">
+                    <div>
+                        <div class="text-3xl mb-2">1️⃣</div>
+                        <h3 class="font-bold text-xl text-[#2F4B7C]">Asesoría</h3>
+                        <p class="text-sm">Definimos un tema viable y creamos un cronograma.</p>
+                    </div>
+                </div>
+                <div class="flowchart-arrow">➔</div>
+                <div class="flowchart-step bg-white shadow-lg w-full md:w-1/4 mb-4 md:mb-0">
+                    <div>
+                        <div class="text-3xl mb-2">2️⃣</div>
+                        <h3 class="font-bold text-xl text-[#665191]">Investigación</h3>
+                        <p class="text-sm">Realizamos la búsqueda bibliográfica y desarrollamos cada capítulo.</p>
+                    </div>
+                </div>
+                <div class="flowchart-arrow">➔</div>
+                <div class="flowchart-step bg-white shadow-lg w-full md:w-1/4">
+                    <div>
+                        <div class="text-3xl mb-2">3️⃣</div>
+                        <h3 class="font-bold text-xl text-[#A05195]">Edición Final</h3>
+                        <p class="text-sm">Revisamos el estilo y aplicamos las normas académicas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="impacto" class="mb-16 pt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] text-center mb-12">Nuestro Impacto en Cifras</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-16">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold text-center text-[#003F5C] mb-4">Nivel de Satisfacción del Cliente</h3>
+                     <p class="text-center text-gray-600 mb-4">La opinión de nuestros clientes es nuestro mayor aval. Nos enorgullece mantener un nivel de satisfacción excepcionalmente alto.</p>
+                    <div class="chart-container">
+                        <canvas id="satisfactionChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold text-center text-[#003F5C] mb-4">Proyectos por Nivel Académico</h3>
+                    <p class="text-center text-gray-600 mb-4">Brindamos soporte especializado para proyectos de Licenciatura y Maestría, adaptándonos al rigor de cada nivel.</p>
+                    <div class="chart-container">
+                        <canvas id="levelChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-bold text-center text-[#003F5C] mb-4">Áreas de Especialización</h3>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-6">Contamos con un equipo multidisciplinario de expertos en estas áreas académicas.</p>
+                <div class="chart-container h-[400px] md:h-[450px] max-h-[500px] max-w-4xl">
+                     <canvas id="expertiseChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="herramientas" class="mb-16 pt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] text-center mb-12">Herramientas con IA de Gemini</h2>
+            <p class="text-lg max-w-3xl mx-auto text-center mb-8">Utiliza nuestras herramientas inteligentes para dar el primer gran paso en tu proyecto. ¡Totalmente gratis!</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="llm-card">
+                    <h3 class="text-2xl font-bold text-[#2F4B7C] mb-2">✨ Generador de Temas de Tesis</h3>
+                    <p class="text-gray-600 text-sm">Describe tu área de interés (e.g., "psicología", "finanzas", "impacto ambiental") y la IA te sugerirá ideas de temas originales y relevantes.</p>
+                    <textarea id="topicInput" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#665191] mt-2" placeholder="Tu área de estudio..."></textarea>
+                    <button id="generateTopicBtn" class="bg-[#F95D6A] hover:bg-[#D45087] text-white font-bold py-2 px-4 rounded-md transition-colors mt-2">Generar Temas</button>
+                    <div id="topicOutput" class="bg-[#F0F4F8] p-4 rounded-md mt-4 min-h-[100px] overflow-y-auto"></div>
+                </div>
+                <div class="llm-card">
+                    <h3 class="text-2xl font-bold text-[#665191] mb-2">✨ Refinador de Preguntas de Investigación</h3>
+                    <p class="text-gray-600 text-sm">Introduce tu pregunta de investigación inicial y la IA te ayudará a refinarla para que sea más clara, específica y académica.</p>
+                    <textarea id="questionInput" rows="3" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#665191] mt-2" placeholder="Tu pregunta de investigación..."></textarea>
+                    <button id="refineQuestionBtn" class="bg-[#F95D6A] hover:bg-[#D45087] text-white font-bold py-2 px-4 rounded-md transition-colors mt-2">Refinar Pregunta</button>
+                    <div id="questionOutput" class="bg-[#F0F4F8] p-4 rounded-md mt-4 min-h-[100px] overflow-y-auto"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="mb-16 pt-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-[#003F5C] text-center mb-12">Ponte en Contacto</h2>
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto">
+                <form id="contactForm">
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 font-bold mb-2">Nombre</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#665191]" placeholder="Tu nombre" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 font-bold mb-2">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#665191]" placeholder="tu.correo@ejemplo.com" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="message" class="block text-gray-700 font-bold mb-2">Mensaje</label>
+                        <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[#665191]" placeholder="Describe tu proyecto o pregunta aquí." required></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-[#F95D6A] hover:bg-[#D45087] text-white font-bold py-3 px-4 rounded-md transition-colors">Enviar Mensaje</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <div id="messageModal" class="modal-overlay z-50">
+        <div class="modal-content">
+            <h3 id="modalTitle" class="text-2xl font-bold mb-4"></h3>
+            <p id="modalMessage" class="mb-6"></p>
+            <button id="closeModalBtn" class="bg-[#003F5C] hover:bg-[#2F4B7C] text-white font-bold py-2 px-6 rounded-md transition-colors">Cerrar</button>
+        </div>
+    </div>
+
+    <footer class="bg-[#003F5C] text-white text-center py-12 px-6">
+        <h2 class="text-3xl font-bold mb-4">¡Da el primer paso hacia tu graduación!</h2>
+        <p class="text-lg mb-6">Contáctanos hoy mismo y comienza tu camino al éxito académico sin estrés.</p>
+        <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8">
+            <p><strong class="text-[#FFA600]">Email:</strong> tesismaestra360@gmail.com</p>
+            <p><strong class="text-[#FFA600]">WhatsApp:</strong> +504 99790088</p>
+        </div>
+        <p class="mt-8 text-sm text-gray-400">&copy; 2025 TesisMaestra360. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const tooltipTitleCallback = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: function(tooltipItems) {
+                                const item = tooltipItems[0];
+                                let label = item.chart.data.labels[item.dataIndex];
+                                if (Array.isArray(label)) {
+                                  return label.join(' ');
+                                } else {
+                                  return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            
+            function wrapLabels(label, maxLength) {
+                if (label.length <= maxLength) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > maxLength) {
+                        lines.push(currentLine.trim());
+                        currentLine = '';
+                    }
+                    currentLine += word + ' ';
+                });
+                lines.push(currentLine.trim());
+                return lines;
+            }
+
+            const satisfactionCtx = document.getElementById('satisfactionChart').getContext('2d');
+            new Chart(satisfactionCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Satisfechos', 'Otros'],
+                    datasets: [{
+                        data: [95, 5],
+                        backgroundColor: ['#2F4B7C', '#D45087'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        ...tooltipTitleCallback.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const levelCtx = document.getElementById('levelChart').getContext('2d');
+            new Chart(levelCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Licenciatura', 'Maestría'],
+                    datasets: [{
+                        data: [65, 35],
+                        backgroundColor: ['#665191', '#FFA600'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        ...tooltipTitleCallback.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            const originalLabels = ['Ciencias Sociales y Humanidades', 'Ingeniería y Tecnología', 'Ciencias de la Salud', 'Administración y Negocios', 'Artes y Diseño', 'Ciencias Naturales y Exactas'];
+            const wrappedExpertiseLabels = originalLabels.map(label => wrapLabels(label, 16));
+            
+            const expertiseCtx = document.getElementById('expertiseChart').getContext('2d');
+            new Chart(expertiseCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedExpertiseLabels,
+                    datasets: [{
+                        label: 'Proyectos Completados',
+                        data: [120, 95, 80, 110, 60, 75],
+                        backgroundColor: ['#003F5C', '#665191', '#A05195', '#F95D6A', '#FF7C43', '#FFA600'],
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                autoSkip: false
+                            }
+                        }
+                    },
+                    plugins: {
+                         ...tooltipTitleCallback.plugins,
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            const contactForm = document.getElementById('contactForm');
+            const messageModal = document.getElementById('messageModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+            function showModal(title, message) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                messageModal.style.display = 'flex';
+            }
+
+            closeModalBtn.addEventListener('click', () => {
+                messageModal.style.display = 'none';
+            });
+
+            contactForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                showModal('Mensaje Enviado', '¡Gracias por contactarnos! En breve nos pondremos en contacto contigo.');
+            });
+
+            const topicInput = document.getElementById('topicInput');
+            const generateTopicBtn = document.getElementById('generateTopicBtn');
+            const topicOutput = document.getElementById('topicOutput');
+
+            generateTopicBtn.addEventListener('click', async () => {
+                const topic = topicInput.value.trim();
+                if (topic === '') {
+                    showModal('Campo Vacío', 'Por favor, describe tu área de estudio para generar ideas.');
+                    return;
+                }
+
+                generateTopicBtn.disabled = true;
+                generateTopicBtn.textContent = 'Generando...';
+                topicOutput.innerHTML = '<p class="text-gray-500">Generando ideas...</p>';
+
+                const userQuery = `Actúa como un asesor académico experto. Genera 5 ideas de temas de tesis originales, actuales y viables para el área de ${topic}. Presenta los temas en una lista numerada, sin descripciones adicionales.`;
+                const systemPrompt = "Eres un asesor académico experto en diversas disciplinas, con un enfoque en la viabilidad y originalidad de los temas de tesis.";
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const payload = {
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                    };
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        topicOutput.innerHTML = `<h4 class="font-bold text-[#003F5C] mb-2">Ideas de temas:</h4><div class="prose">${text.replace(/\n/g, '<br>')}</div>`;
+                    } else {
+                        topicOutput.innerHTML = '<p class="text-red-500">Error al generar ideas. Inténtalo de nuevo.</p>';
+                    }
+                } catch (error) {
+                    topicOutput.innerHTML = '<p class="text-red-500">Error en la conexión. Por favor, revisa tu conexión a Internet.</p>';
+                } finally {
+                    generateTopicBtn.disabled = false;
+                    generateTopicBtn.textContent = 'Generar Temas';
+                }
+            });
+
+            const questionInput = document.getElementById('questionInput');
+            const refineQuestionBtn = document.getElementById('refineQuestionBtn');
+            const questionOutput = document.getElementById('questionOutput');
+
+            refineQuestionBtn.addEventListener('click', async () => {
+                const question = questionInput.value.trim();
+                if (question === '') {
+                    showModal('Campo Vacío', 'Por favor, introduce tu pregunta de investigación para refinarla.');
+                    return;
+                }
+
+                refineQuestionBtn.disabled = true;
+                refineQuestionBtn.textContent = 'Refinando...';
+                questionOutput.innerHTML = '<p class="text-gray-500">Refinando tu pregunta...</p>';
+
+                const userQuery = `Actúa como un mentor académico. Refina la siguiente pregunta de investigación para que sea más clara, específica, enfocada y académica, sin cambiar el tema principal. Proporciona una versión mejorada y explica brevemente por qué es más efectiva. Pregunta: "${question}"`;
+                const systemPrompt = "Eres un mentor académico experto en metodología de la investigación. Tu objetivo es ayudar a los estudiantes a formular preguntas de investigación sólidas y bien definidas.";
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                try {
+                    const payload = {
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
+                    };
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                    if (text) {
+                        questionOutput.innerHTML = `<h4 class="font-bold text-[#003F5C] mb-2">Pregunta refinada:</h4><div class="prose">${text.replace(/\n/g, '<br>')}</div>`;
+                    } else {
+                        questionOutput.innerHTML = '<p class="text-red-500">Error al refinar la pregunta. Inténtalo de nuevo.</p>';
+                    }
+                } catch (error) {
+                    questionOutput.innerHTML = '<p class="text-red-500">Error en la conexión. Por favor, revisa tu conexión a Internet.</p>';
+                } finally {
+                    refineQuestionBtn.disabled = false;
+                    refineQuestionBtn.textContent = 'Refinar Pregunta';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
